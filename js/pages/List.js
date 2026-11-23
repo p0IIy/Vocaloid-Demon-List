@@ -138,7 +138,7 @@ export default {
     }),
     computed: {
         level() {
-            return this.list[this.selected][0];
+            return this.list?.[this.selected]?.[0] ?? null;
         },
         video() {
             if (!this.level.showcase) {
@@ -153,29 +153,23 @@ export default {
         },
     },
     async mounted() {
-        // Hide loading spinner
-        this.list = await fetchList();
-        this.editors = await fetchEditors();
-
-        // Error handling
-        if (!this.list) {
-            this.errors = [
-                "Failed to load list. Retry in a few minutes or notify list staff.",
-            ];
-        } else {
-            this.errors.push(
-                ...this.list
-                    .filter(([_, err]) => err)
-                    .map(([_, err]) => {
-                        return `Failed to load level. (${err}.json)`;
-                    })
-            );
-            if (!this.editors) {
-                this.errors.push("Failed to load list editors.");
+        try {
+            this.list = await fetchList();
+            this.editors = await fetchEditors();
+            if (!this.list) {
+                this.errors.push("Could not load the level list. Check that data/_list.json is available.");
+            } else {
+                this.errors.push(
+                    ...this.list.filter(([_, err]) => err).map(([_, err]) => `Could not load data/${err}.json.`)
+                );
             }
+            if (!this.editors) this.errors.push("Could not load data/_editors.json.");
+        } catch (error) {
+            console.error("List page failed to initialize:", error);
+            this.errors.push("The list could not finish loading. Please refresh in a moment.");
+        } finally {
+            this.loading = false;
         }
-
-        this.loading = false;
     },
     methods: {
         embed,
