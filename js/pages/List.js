@@ -98,30 +98,21 @@ export default {
                             </li>
                         </ol>
                     </template>
-                    <h3>Submission Requirements</h3>
+                    <h3>About the List</h3>
                     <p>
-                        Achieved the record without using hacks (however, FPS bypass is allowed, up to 360fps)
+                        This list ranks demon levels that use Vocaloid songs.
                     </p>
                     <p>
-                        Achieved the record on the level that is listed on the site - please check the level ID before you submit a record
+                        A level must use a section of the song that actually features a Vocaloid singing. Simply using a song associated with Vocaloid is not enough if the part used does not contain Vocaloid vocals (for example, Boowomp).
                     </p>
                     <p>
-                        Have either source audio or clicks/taps in the video. Edited audio only does not count
+                        UTAUloids, Fanloids, and other related voicebanks are also accepted.
                     </p>
                     <p>
-                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt. Everyplay records are exempt from this
+                        Unrated demon levels are eligible for the list.
                     </p>
                     <p>
-                        The recording must also show the player hit the endwall, or the completion will be invalidated.
-                    </p>
-                    <p>
-                        Do not use secret routes or bug routes
-                    </p>
-                    <p>
-                        Do not use easy modes, only a record of the unmodified level qualifies
-                    </p>
-                    <p>
-                        Once a level falls onto the Legacy List, we accept records for it for 24 hours after it falls off, then afterwards we never accept records for said level
+                        Levels must be demon difficulty and considered demons to be included. Levels that do not meet these criteria will not be placed on the list.
                     </p>
                 </div>
             </div>
