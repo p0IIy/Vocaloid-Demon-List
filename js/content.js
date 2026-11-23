@@ -5,15 +5,25 @@ import { round, score } from './score.js';
  */
 const dir = new URL('../data/', import.meta.url).href;
 
+async function fetchWithTimeout(url, timeout = 10000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeout);
+    try {
+        return await fetch(url, { signal: controller.signal, cache: 'no-store' });
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
 export async function fetchList() {
     try {
-        const listResult = await fetch(`${dir}_list.json`);
+        const listResult = await fetchWithTimeout(`${dir}_list.json`);
         if (!listResult.ok) throw new Error(`List request failed: ${listResult.status}`);
         const list = await listResult.json();
         return await Promise.all(
             list.map(async (path, rank) => {
                 try {
-                    const levelResult = await fetch(`${dir}${path}.json`);
+                    const levelResult = await fetchWithTimeout(`${dir}${path}.json`);
                     if (!levelResult.ok) throw new Error(`Level request failed: ${levelResult.status}`);
                     const level = await levelResult.json();
                     return [
@@ -26,21 +36,21 @@ export async function fetchList() {
                         },
                         null,
                     ];
-                } catch {
-                    console.error(`Failed to load level #${rank + 1} ${path}.`);
+                } catch (error) {
+                    console.error(`Failed to load level #${rank + 1} ${path}:`, error);
                     return [null, path];
                 }
             }),
         );
-    } catch {
-        console.error(`Failed to load list.`);
+    } catch (error) {
+        console.error(`Failed to load list:`, error);
         return null;
     }
 }
 
 export async function fetchEditors() {
     try {
-        const editorsResults = await fetch(`${dir}_editors.json`);
+        const editorsResults = await fetchWithTimeout(`${dir}_editors.json`);
         if (!editorsResults.ok) throw new Error(`Editors request failed: ${editorsResults.status}`);
         const editors = await editorsResults.json();
         return editors;
